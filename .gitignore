@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+*.log
+# Never commit credentials
+scripts/.env
+scripts/config.local.py
+.env
