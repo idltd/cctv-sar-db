@@ -1,7 +1,9 @@
 .DS_Store
 Thumbs.db
 *.log
-# Never commit credentials
+# Never commit credentials or throwaway scripts with hardcoded keys
 scripts/.env
 scripts/config.local.py
+scripts/*.local.js
+scripts/*.local.py
 .env

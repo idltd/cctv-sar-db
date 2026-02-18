@@ -28,7 +28,12 @@ from datetime import date
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://lyijydkwitjxbcxurkep.supabase.co")
 SERVICE_KEY  = os.environ.get("SUPABASE_SERVICE_KEY", "")
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_ENDPOINTS = [
+    "https://overpass.kumi.systems/api/interpreter",  # try first — often faster
+    "https://overpass-api.de/api/interpreter",
+    "https://z.overpass-api.de/api/interpreter",
+]
+OVERPASS_URL = OVERPASS_ENDPOINTS[0]  # default; main() tries all on failure
 OVERPASS_DELAY = 3  # seconds between chain queries (Overpass fair-use policy)
 BATCH_SIZE = 200    # rows per Supabase upsert request
 TODAY = date.today().isoformat()
@@ -69,7 +74,8 @@ def supabase_upsert(table, rows):
         raise RuntimeError(f"Supabase upsert failed: HTTP {status}")
 
 def overpass_query(wikidata_id=None, brand_name=None):
-    """Return all UK nodes/ways/relations for a brand, by wikidata ID or brand name."""
+    """Return all UK nodes/ways/relations for a brand, by wikidata ID or brand name.
+    Tries multiple Overpass endpoints on failure."""
     if wikidata_id:
         filter_tag = f'"brand:wikidata"="{wikidata_id}"'
     else:
@@ -86,13 +92,19 @@ area["ISO3166-1"="GB"][admin_level=2]->.uk;
 out center tags;
 """
     data = urllib.parse.urlencode({"data": query}).encode()
-    req = urllib.request.Request(
-        OVERPASS_URL,
-        data=data,
-        headers={"User-Agent": "CCTV-SAR-App/1.0 (https://github.com/idltd/cctv-sar-db)"},
-    )
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return json.loads(r.read())
+    last_err = None
+    for endpoint in OVERPASS_ENDPOINTS:
+        try:
+            req = urllib.request.Request(
+                endpoint, data=data,
+                headers={"User-Agent": "CCTV-SAR-App/1.0 (https://github.com/idltd/cctv-sar-db)"},
+            )
+            with urllib.request.urlopen(req, timeout=120) as r:
+                return json.loads(r.read())
+        except Exception as e:
+            last_err = e
+            time.sleep(3)
+    raise last_err
 
 def make_camera(element, operator_id, brand_name):
     """Convert an Overpass element to a cameras row."""

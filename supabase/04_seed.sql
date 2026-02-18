@@ -3,67 +3,103 @@
 -- Safe to re-run — uses ON CONFLICT DO NOTHING.
 
 -- ── Operators ──────────────────────────────────────────────────────────────────
-INSERT INTO operators (id, name, ico_reg, privacy_email, postal_address, wikidata_id) VALUES
+INSERT INTO operators (id, name, ico_reg, privacy_email, postal_address, wikidata_id, osm_brand) VALUES
 
 ('gstt',        'Guy''s and St Thomas'' NHS Foundation Trust',
                 'Z5636970',
                 'gstt.informationgovernance@nhs.net',
                 'Trust Headquarters, Gassiot House, St Thomas'' Hospital, Westminster Bridge Road, London, SE1 7EH',
-                NULL),
+                NULL, NULL),
 
 ('tfl',         'Transport for London',
                 'Z129176X',
                 'dpo@tfl.gov.uk',
                 'Data Protection Officer, Transport for London, 4th Floor, 5 Endeavour Square, London E20 1JN',
-                NULL),
+                NULL, NULL),
 
 ('networkrail', 'Network Rail Infrastructure Limited',
                 'Z7071943',
                 'data.protection@networkrail.co.uk',
                 'Data Protection Officer, Network Rail, 1st Floor Willen, The Quadrant, Milton Keynes MK9 1EN',
-                NULL),
+                NULL, NULL),
 
 ('btp',         'Chief Constable, British Transport Police',
                 'Z4882139',
                 'dataprotection@btp.police.uk',
                 'Data Protection & FOI Team, British Transport Police, Second Floor, 3 Callaghan Square, Cardiff CF10 5BT',
-                NULL),
+                NULL, NULL),
 
 ('met',         'Commissioner of Police of the Metropolis',
                 'Z4888193',
                 'DataRights@met.police.uk',
                 'MPS Data Office, Metropolitan Police Service, New Scotland Yard, Victoria Embankment, London SW1A 2JL',
-                NULL),
+                NULL, NULL),
 
 ('tesco',       'Tesco Stores Limited',
                 'Z6712178',
                 'subjectaccess.request@tesco.com',
                 'Data Protection Executive, Tesco Stores Limited, Tesco House, Shire Park, Kestrel Way, Welwyn Garden City AL7 1GA',
-                'Q487494'),
+                'Q487494', NULL),
 
 ('sainsburys',  'Sainsbury''s Supermarkets Ltd',
                 'Z4722394',
                 'privacy@sainsburys.co.uk',
                 'Data Protection Officer, Privacy Team, Sainsbury''s Supermarkets Ltd, 33 Charterhouse Street, London EC1M 6HA',
-                'Q950720'),
+                NULL, 'Sainsbury''s'),
 
 ('ms',          'Marks and Spencer plc',
                 'Z6046528',
                 'generaldataprotectionrequests@customer-support.marksandspencer.com',
                 'Data Protection, Marks and Spencer plc, Chester Business Park, Wrexham Road, Chester CH4 9GA',
-                'Q714491'),
+                'Q714491', NULL),
 
 ('westfield',   'Westfield Europe Limited',
                 'Z5539526',
                 'dpo@urw.com',
                 'Data Privacy Team, Westfield Europe Limited, 4th Floor, 1 Ariel Way, London W12 7SL',
-                NULL),
+                NULL, NULL),
 
 ('nhsengland',  'NHS England',
                 'Z2950066',
                 'england.dpo@nhs.net',
                 'Data Protection Officer, NHS England, 7-8 Wellington Place, 6th Floor, Leeds LS1 4AP',
-                NULL)
+                NULL, NULL),
+
+('asda',        'ASDA Stores Limited',
+                'Z7545987',
+                'dataprotection@asda.uk',
+                'ASDA House, South Bank, Great Wilson Street, Leeds, LS11 5AD',
+                'Q297410', NULL),
+
+('morrisons',   'Wm Morrison Supermarkets Plc',
+                'Z5225696',
+                'dataprotection@morrisonsplc.co.uk',
+                'Hilmore House, Gain Lane, Bradford, BD3 7DL',
+                'Q922344', NULL),
+
+('waitrose',    'Waitrose Limited',
+                'Z5939309',
+                NULL,
+                '1 Drummond Gate, Pimlico, London, SW1V 2QQ',
+                NULL, 'Waitrose'),
+
+('boots',       'Boots UK Limited',
+                'Z7487392',
+                NULL,
+                '1 Thane Road West, Nottingham, NG2 3AA',
+                NULL, 'Boots'),
+
+('greggs',      'Greggs PLC',
+                'Z7225689',
+                'data.protection@greggs.co.uk',
+                'Greggs House, Quorum Business Park, Newcastle upon Tyne, NE12 8BU',
+                NULL, 'Greggs'),
+
+('mcdonalds',   'McDonald''s Restaurants Limited',
+                'Z6584347',
+                NULL,
+                '11-59 High Road, East Finchley, London, N2 8AW',
+                'Q38076', NULL)
 
 ON CONFLICT (id) DO NOTHING;
 
