@@ -1,0 +1,91 @@
+name: Camera Submission
+description: Submit a CCTV camera location and operator details to the registry
+title: "Camera: [OPERATOR NAME] – [ROAD / AREA]"
+labels: ["submission"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing. Please provide as much detail as you can.
+        All fields marked * are required. Submissions are reviewed before going live.
+        **Do not include any personal information about yourself or anyone else.**
+
+  - type: input
+    id: operator_name
+    attributes:
+      label: "Organisation / Operator name *"
+      placeholder: "e.g. Tesco Stores Ltd, City of London Corporation"
+    validations:
+      required: true
+
+  - type: input
+    id: ico_reg
+    attributes:
+      label: ICO Registration Number
+      description: Found at ico.org.uk/ESDWebPages/Search — starts with Z or ZA
+      placeholder: "e.g. Z1234567"
+    validations:
+      required: false
+
+  - type: input
+    id: privacy_email
+    attributes:
+      label: Privacy / DPO email address
+      placeholder: "e.g. dpo@example.com"
+    validations:
+      required: false
+
+  - type: textarea
+    id: postal_address
+    attributes:
+      label: Postal address
+      description: Registered address for SAR correspondence
+      placeholder: |
+        Example House
+        1 Example Street
+        London
+        EC1A 1BB
+    validations:
+      required: false
+
+  - type: input
+    id: lat
+    attributes:
+      label: "Latitude *"
+      description: Decimal degrees, 5+ decimal places (e.g. from Google Maps — right-click the camera location)
+      placeholder: "e.g. 51.507400"
+    validations:
+      required: true
+
+  - type: input
+    id: lng
+    attributes:
+      label: "Longitude *"
+      description: Decimal degrees, negative for locations west of Greenwich
+      placeholder: "e.g. -0.127500"
+    validations:
+      required: true
+
+  - type: input
+    id: location_desc
+    attributes:
+      label: "Location description *"
+      description: A short human-readable description of where the camera is
+      placeholder: "e.g. Outside Tesco Extra, High Street, Anytown — covering car park entrance"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: >
+            This information is factual and publicly available.
+            I am not submitting any personal data about individuals.
+          required: true
+        - label: >
+            I understand this submission will be reviewed before publication
+            and may be edited for accuracy.
+          required: true

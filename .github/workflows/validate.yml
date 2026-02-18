@@ -1,0 +1,47 @@
+name: Validate cameras.json
+
+on:
+  pull_request:
+    paths:
+      - 'cameras.json'
+  push:
+    paths:
+      - 'cameras.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate cameras.json
+        run: |
+          node -e "
+          const fs   = require('fs');
+          const data = JSON.parse(fs.readFileSync('cameras.json', 'utf8'));
+
+          if (!data.version)            throw new Error('Missing version field');
+          if (!Array.isArray(data.cameras)) throw new Error('cameras must be an array');
+
+          const ids = new Set();
+          data.cameras.forEach((c, i) => {
+            const ctx = \`Camera[\${i}] id=\${c.id}\`;
+
+            if (!c.id)           throw new Error(\`\${ctx}: missing id\`);
+            if (ids.has(c.id))   throw new Error(\`\${ctx}: duplicate id '\${c.id}'\`);
+            ids.add(c.id);
+
+            // UK bounding box check
+            if (typeof c.lat !== 'number' || c.lat < 49.5 || c.lat > 60.9)
+              throw new Error(\`\${ctx}: lat \${c.lat} is outside UK range (49.5–60.9)\`);
+            if (typeof c.lng !== 'number' || c.lng < -8.2 || c.lng > 1.8)
+              throw new Error(\`\${ctx}: lng \${c.lng} is outside UK range (-8.2–1.8)\`);
+
+            if (!c.location_desc)
+              throw new Error(\`\${ctx}: missing location_desc\`);
+            if (!c.operator || !c.operator.name)
+              throw new Error(\`\${ctx}: missing operator.name\`);
+          });
+
+          console.log('✓ cameras.json is valid —', data.cameras.length, 'camera(s)');
+          "

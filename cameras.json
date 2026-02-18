@@ -1,0 +1,19 @@
+{
+    "version": "1",
+    "updated": "2026-02-18",
+    "cameras": [
+        {
+            "id": "sample-001",
+            "lat": 51.50102,
+            "lng": -0.12445,
+            "location_desc": "Westminster Bridge Road, outside St Thomas' Hospital main entrance",
+            "operator": {
+                "name": "Guy's and St Thomas' NHS Foundation Trust",
+                "ico_reg": "Z5636970",
+                "privacy_email": "gstt.informationgovernance@nhs.net",
+                "postal_address": "Trust Headquarters, Gassiot House, St Thomas' Hospital, Westminster Bridge Road, London, SE1 7EH"
+            },
+            "added": "2026-02-18"
+        }
+    ]
+}
