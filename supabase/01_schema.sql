@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS operators (
     privacy_email   text,
     postal_address  text,
     wikidata_id     text,           -- OpenStreetMap brand:wikidata tag value
+    osm_brand       text,           -- fallback: OSM brand= tag (when wikidata not tagged)
     created_at      timestamptz DEFAULT now()
 );
 

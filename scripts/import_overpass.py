@@ -68,15 +68,20 @@ def supabase_upsert(table, rows):
     if status not in (200, 201):
         raise RuntimeError(f"Supabase upsert failed: HTTP {status}")
 
-def overpass_query(wikidata_id):
-    """Return all UK nodes/ways/relations tagged with brand:wikidata=wikidata_id."""
+def overpass_query(wikidata_id=None, brand_name=None):
+    """Return all UK nodes/ways/relations for a brand, by wikidata ID or brand name."""
+    if wikidata_id:
+        filter_tag = f'"brand:wikidata"="{wikidata_id}"'
+    else:
+        safe = brand_name.replace('"', '\\"')
+        filter_tag = f'"brand"="{safe}"'
     query = f"""
 [out:json][timeout:90];
 area["ISO3166-1"="GB"][admin_level=2]->.uk;
 (
-  node["brand:wikidata"="{wikidata_id}"](area.uk);
-  way["brand:wikidata"="{wikidata_id}"](area.uk);
-  relation["brand:wikidata"="{wikidata_id}"](area.uk);
+  node[{filter_tag}](area.uk);
+  way[{filter_tag}](area.uk);
+  relation[{filter_tag}](area.uk);
 );
 out center tags;
 """
@@ -150,32 +155,45 @@ def main():
         print("ERROR: Set SUPABASE_SERVICE_KEY environment variable.", file=sys.stderr)
         sys.exit(1)
 
-    print("Fetching operators with wikidata_id from Supabase...")
+    print("Fetching operators with wikidata_id or osm_brand from Supabase...")
     operators = supabase_get(
-        "/rest/v1/operators?wikidata_id=not.is.null&select=id,name,wikidata_id"
+        "/rest/v1/operators?or=(wikidata_id.not.is.null,osm_brand.not.is.null)&select=id,name,wikidata_id,osm_brand"
     )
 
     if not operators:
-        print("No operators with wikidata_id found. Add wikidata_id to operators first.")
+        print("No operators with wikidata_id or osm_brand found.")
         return
 
     print(f"Found {len(operators)} operator(s) to import:\n")
     for op in operators:
-        print(f"  {op['id']:15s}  {op['name']}  ({op['wikidata_id']})")
+        tag = op.get('wikidata_id') or f"brand={op.get('osm_brand')}"
+        print(f"  {op['id']:15s}  {op['name']}  ({tag})")
     print()
 
     total_new = 0
     for op in operators:
         op_id       = op["id"]
         op_name     = op["name"]
-        wikidata_id = op["wikidata_id"]
+        wikidata_id = op.get("wikidata_id")
+        osm_brand   = op.get("osm_brand")
 
-        print(f"Querying Overpass for {op_name} ({wikidata_id})...")
+        label = wikidata_id or f"brand={osm_brand}"
+        print(f"Querying Overpass for {op_name} ({label})...")
         try:
-            result = overpass_query(wikidata_id)
+            result = overpass_query(wikidata_id=wikidata_id, brand_name=osm_brand)
         except Exception as e:
             print(f"  ERROR: {e}")
             continue
+
+        # If wikidata returned nothing, retry by brand name
+        if wikidata_id and not result.get("elements") and osm_brand:
+            print(f"  0 by wikidata — retrying by brand name '{osm_brand}'...")
+            time.sleep(2)
+            try:
+                result = overpass_query(brand_name=osm_brand)
+            except Exception as e:
+                print(f"  ERROR on retry: {e}")
+                continue
 
         cameras = []
         for element in result.get("elements", []):
