@@ -1,56 +1,99 @@
 # CCTV SAR — Camera Registry
 
-Community-maintained registry of CCTV cameras and their data controllers in the UK, used by the [CCTV SAR app](https://github.com/idltd/CCTV-Log) to help people submit Subject Access Requests for footage of themselves.
+Community-maintained registry of CCTV cameras and their data controllers in the UK, used by the **[CCTV SAR app](https://idltd.github.io/CCTV-Log/)** to help people submit Subject Access Requests for footage of themselves under the UK GDPR.
+
+---
 
 ## What's here
 
-`cameras.json` — a structured list of known cameras with operator details (name, ICO registration number, privacy contact email, postal address).
+`cameras.json` — a curated list of known cameras with operator details:
+
+| Field | Description |
+|---|---|
+| `lat` / `lng` | Camera location (decimal degrees) |
+| `location_desc` | Human-readable description of where the camera is |
+| `operator.name` | Name of the data controller |
+| `operator.ico_reg` | ICO registration number (Z/ZA prefix) |
+| `operator.privacy_email` | Email address for SAR / DPO queries |
+| `operator.postal_address` | Registered address for postal correspondence |
+
+All fields except `id`, `lat`, `lng`, `location_desc` and `operator.name` are optional but very helpful.
+
+---
 
 ## Privacy
 
 This registry contains **factual, publicly available information only**:
-- Camera locations (lat/lng)
-- Operator names
-- ICO registration numbers (public register)
-- Privacy/DPO contact details (public register)
+
+- Camera GPS locations
+- Operator / data controller names
+- ICO registration numbers (from the public ICO register)
+- Privacy contact details (from the public ICO register or operator websites)
 
 **No personal data about individuals is stored or accepted.**
+All contributions are reviewed before going live.
+
+---
 
 ## Contributing
 
-### Via the app
-If you use the [CCTV SAR app](https://github.com/idltd/CCTV-Log) after submitting a request, you can contribute the camera details anonymously — the app opens a pre-filled submission form.
+### Via the CCTV SAR app *(easiest)*
+After sending a SAR, the app offers to contribute the camera's location and operator details. It opens a pre-filled GitHub issue — you just confirm and submit.
 
-### Via GitHub Issue
-[Submit a camera via the issue form →](../../issues/new?template=camera.yml)
+### Via GitHub Issue *(no git knowledge needed)*
+Use the structured submission form:
 
-### Via Pull Request
-Edit `cameras.json` directly and open a PR. The CI workflow will validate your entry automatically. Each camera entry should follow this structure:
+➡ **[Submit a camera →](../../issues/new?template=camera.yml)**
+
+You'll need a free GitHub account. Your GitHub username will be visible on the issue, but no other personal information is required.
+
+### Via Pull Request *(for git users)*
+Edit `cameras.json` directly and open a PR. The CI workflow validates your entry automatically. Follow this structure:
 
 ```json
 {
-    "id": "unique-id",
+    "id": "unique-kebab-case-id",
     "lat": 51.507400,
     "lng": -0.127500,
-    "location_desc": "Brief description of where the camera is",
+    "location_desc": "Outside Tesco Extra, High Street, Anytown — covers car park entrance",
     "operator": {
-        "name": "Organisation Name",
-        "ico_reg": "Z1234567",
-        "privacy_email": "dpo@example.com",
-        "postal_address": "Address\nTown\nPostcode"
+        "name": "Tesco Stores Ltd",
+        "ico_reg": "Z7234567",
+        "privacy_email": "dpo@tesco.com",
+        "postal_address": "Tesco House, Shire Park, Kestrel Way, Welwyn Garden City, AL7 1GA"
     },
     "added": "YYYY-MM-DD"
 }
 ```
 
-**Required fields:** `id`, `lat`, `lng`, `location_desc`, `operator.name`
-
+**Required:** `id`, `lat`, `lng`, `location_desc`, `operator.name`
 **Optional but helpful:** `ico_reg`, `privacy_email`, `postal_address`
 
-## ICO registration lookup
+---
 
-ICO registration numbers can be found at: https://ico.org.uk/ESDWebPages/Search
+## Finding the operator's ICO registration number
+
+1. Go to [ico.org.uk/ESDWebPages/Search](https://ico.org.uk/ESDWebPages/Search)
+2. Search by the organisation's name
+3. The registration number starts with **Z** or **ZA**
+4. The registered DPO or data controller contact is also listed there
+
+Most large retailers, councils, transport operators, NHS trusts and housing associations are registered.
+
+---
+
+## Validation
+
+Every pull request runs an automated check that verifies:
+- JSON is valid and parses correctly
+- All required fields are present
+- `id` values are unique
+- `lat` and `lng` are within the UK bounding box (49.5°N–60.9°N, 8.2°W–1.8°E)
+
+PRs that fail validation cannot be merged.
+
+---
 
 ## Licence
 
-Data is released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) — public domain, no restrictions.
+Data is released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) — public domain, no restrictions on use.
