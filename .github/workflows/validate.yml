@@ -20,8 +20,10 @@ jobs:
           const fs   = require('fs');
           const data = JSON.parse(fs.readFileSync('cameras.json', 'utf8'));
 
-          if (!data.version)            throw new Error('Missing version field');
+          if (!data.version)                throw new Error('Missing version field');
           if (!Array.isArray(data.cameras)) throw new Error('cameras must be an array');
+
+          const operators = data.operators || {};
 
           const ids = new Set();
           data.cameras.forEach((c, i) => {
@@ -39,9 +41,18 @@ jobs:
 
             if (!c.location_desc)
               throw new Error(\`\${ctx}: missing location_desc\`);
-            if (!c.operator || !c.operator.name)
-              throw new Error(\`\${ctx}: missing operator.name\`);
+
+            // Accept either embedded operator (v1) or operator_id reference (v2)
+            if (c.operator) {
+              if (!c.operator.name) throw new Error(\`\${ctx}: operator.name is empty\`);
+            } else if (c.operator_id) {
+              if (!operators[c.operator_id])
+                throw new Error(\`\${ctx}: operator_id '\${c.operator_id}' not found in operators table\`);
+            } else {
+              throw new Error(\`\${ctx}: must have either operator or operator_id\`);
+            }
           });
 
-          console.log('✓ cameras.json is valid —', data.cameras.length, 'camera(s)');
+          const opCount = Object.keys(operators).length;
+          console.log('✓ cameras.json is valid —', data.cameras.length, 'camera(s),', opCount, 'operator(s)');
           "

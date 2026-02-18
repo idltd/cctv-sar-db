@@ -1,18 +1,155 @@
 {
-    "version": "1",
+    "version": "2",
     "updated": "2026-02-18",
+    "operators": {
+        "gstt": {
+            "name": "Guy's and St Thomas' NHS Foundation Trust",
+            "ico_reg": "Z5636970",
+            "privacy_email": "gstt.informationgovernance@nhs.net",
+            "postal_address": "Trust Headquarters, Gassiot House, St Thomas' Hospital, Westminster Bridge Road, London, SE1 7EH"
+        },
+        "tfl": {
+            "name": "Transport for London",
+            "ico_reg": "Z129176X",
+            "privacy_email": "dpo@tfl.gov.uk",
+            "postal_address": "Data Protection Officer, Transport for London, 4th Floor, 5 Endeavour Square, London E20 1JN"
+        },
+        "networkrail": {
+            "name": "Network Rail Infrastructure Limited",
+            "ico_reg": "Z7071943",
+            "privacy_email": "data.protection@networkrail.co.uk",
+            "postal_address": "Data Protection Officer, Network Rail, 1st Floor Willen, The Quadrant, Milton Keynes MK9 1EN"
+        },
+        "btp": {
+            "name": "Chief Constable, British Transport Police",
+            "ico_reg": "Z4882139",
+            "privacy_email": "dataprotection@btp.police.uk",
+            "postal_address": "Data Protection & FOI Team, British Transport Police, Second Floor, 3 Callaghan Square, Cardiff CF10 5BT"
+        },
+        "met": {
+            "name": "Commissioner of Police of the Metropolis",
+            "ico_reg": "Z4888193",
+            "privacy_email": "DataRights@met.police.uk",
+            "postal_address": "MPS Data Office, Metropolitan Police Service, New Scotland Yard, Victoria Embankment, London SW1A 2JL"
+        },
+        "tesco": {
+            "name": "Tesco Stores Limited",
+            "ico_reg": "Z6712178",
+            "privacy_email": "subjectaccess.request@tesco.com",
+            "postal_address": "Data Protection Executive, Tesco Stores Limited, Tesco House, Shire Park, Kestrel Way, Welwyn Garden City AL7 1GA"
+        },
+        "sainsburys": {
+            "name": "Sainsbury's Supermarkets Ltd",
+            "ico_reg": "Z4722394",
+            "privacy_email": "privacy@sainsburys.co.uk",
+            "postal_address": "Data Protection Officer, Privacy Team, Sainsbury's Supermarkets Ltd, 33 Charterhouse Street, London EC1M 6HA"
+        },
+        "ms": {
+            "name": "Marks and Spencer plc",
+            "ico_reg": "Z6046528",
+            "privacy_email": "generaldataprotectionrequests@customer-support.marksandspencer.com",
+            "postal_address": "Data Protection, Marks and Spencer plc, Chester Business Park, Wrexham Road, Chester CH4 9GA"
+        },
+        "westfield": {
+            "name": "Westfield Europe Limited",
+            "ico_reg": "Z5539526",
+            "privacy_email": "dpo@urw.com",
+            "postal_address": "Data Privacy Team, Westfield Europe Limited, 4th Floor, 1 Ariel Way, London W12 7SL"
+        },
+        "nhsengland": {
+            "name": "NHS England",
+            "ico_reg": "Z2950066",
+            "privacy_email": "england.dpo@nhs.net",
+            "postal_address": "Data Protection Officer, NHS England, 7-8 Wellington Place, 6th Floor, Leeds LS1 4AP"
+        }
+    },
     "cameras": [
         {
-            "id": "sample-001",
+            "id": "gstt-001",
             "lat": 51.50102,
             "lng": -0.12445,
             "location_desc": "Westminster Bridge Road, outside St Thomas' Hospital main entrance",
-            "operator": {
-                "name": "Guy's and St Thomas' NHS Foundation Trust",
-                "ico_reg": "Z5636970",
-                "privacy_email": "gstt.informationgovernance@nhs.net",
-                "postal_address": "Trust Headquarters, Gassiot House, St Thomas' Hospital, Westminster Bridge Road, London, SE1 7EH"
-            },
+            "operator_id": "gstt",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "tfl-brixton-001",
+            "lat": 51.462618,
+            "lng": -0.114888,
+            "location_desc": "Brixton Underground Station street entrance, Brixton Road SW9",
+            "operator_id": "tfl",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "networkrail-waterloo-001",
+            "lat": 51.5032,
+            "lng": -0.1123,
+            "location_desc": "London Waterloo station main concourse entrance, Waterloo Road SE1",
+            "operator_id": "networkrail",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "btp-kingscross-001",
+            "lat": 51.5331,
+            "lng": -0.1225,
+            "location_desc": "King's Cross / St Pancras International station — British Transport Police operational area",
+            "operator_id": "btp",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "met-nsyard-001",
+            "lat": 51.5029,
+            "lng": -0.1242,
+            "location_desc": "New Scotland Yard exterior, Victoria Embankment, London SW1A",
+            "operator_id": "met",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "tesco-wembley-001",
+            "lat": 51.5480,
+            "lng": -0.2700,
+            "location_desc": "Tesco Extra, Great Central Way, Wembley NW10 — car park entrance",
+            "operator_id": "tesco",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "sainsburys-nineelms-001",
+            "lat": 51.48064,
+            "lng": -0.129065,
+            "location_desc": "Sainsbury's superstore, Wandsworth Road, Nine Elms SW8",
+            "operator_id": "sainsburys",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "ms-marblearch-001",
+            "lat": 51.5145,
+            "lng": -0.1567,
+            "location_desc": "Marks & Spencer flagship store, 458 Oxford Street, London W1C — main entrance",
+            "operator_id": "ms",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "westfield-whitecity-001",
+            "lat": 51.5072,
+            "lng": -0.2217,
+            "location_desc": "Westfield London shopping centre, Ariel Way, White City W12 — main entrance",
+            "operator_id": "westfield",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "westfield-stratford-001",
+            "lat": 51.5441,
+            "lng": -0.0054,
+            "location_desc": "Westfield Stratford City, Montfichet Road, London E20 — main entrance",
+            "operator_id": "westfield",
+            "added": "2026-02-18"
+        },
+        {
+            "id": "nhsengland-leeds-001",
+            "lat": 53.7957,
+            "lng": -1.5561,
+            "location_desc": "NHS England headquarters, 7-8 Wellington Place, Leeds LS1 — building entrance",
+            "operator_id": "nhsengland",
             "added": "2026-02-18"
         }
     ]

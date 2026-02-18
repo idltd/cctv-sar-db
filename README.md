@@ -6,18 +6,32 @@ Community-maintained registry of CCTV cameras and their data controllers in the 
 
 ## What's here
 
-`cameras.json` — a curated list of known cameras with operator details:
+`cameras.json` has two sections:
+
+### `operators` (keyed object)
+
+Operator details are stored once and referenced by cameras, avoiding duplication.
 
 | Field | Description |
 |---|---|
-| `lat` / `lng` | Camera location (decimal degrees) |
-| `location_desc` | Human-readable description of where the camera is |
-| `operator.name` | Name of the data controller |
-| `operator.ico_reg` | ICO registration number (Z/ZA prefix) |
-| `operator.privacy_email` | Email address for SAR / DPO queries |
-| `operator.postal_address` | Registered address for postal correspondence |
+| key | Short unique identifier, e.g. `tesco` or `tfl` |
+| `name` | Name of the data controller (required) |
+| `ico_reg` | ICO registration number (Z/ZA prefix) |
+| `privacy_email` | Email address for SAR / DPO queries |
+| `postal_address` | Registered address for postal correspondence |
 
-All fields except `id`, `lat`, `lng`, `location_desc` and `operator.name` are optional but very helpful.
+### `cameras` (array)
+
+| Field | Description |
+|---|---|
+| `id` | Unique kebab-case identifier (required) |
+| `lat` / `lng` | Camera location in decimal degrees (required) |
+| `location_desc` | Human-readable description of where the camera is (required) |
+| `operator_id` | Key into the `operators` table (use this for known operators) |
+| `operator` | Embedded operator object — use only when adding a new operator not yet in the table |
+| `added` | ISO date the entry was added |
+
+**Required:** `id`, `lat`, `lng`, `location_desc`, and either `operator_id` or `operator.name`
 
 ---
 
@@ -48,25 +62,38 @@ Use the structured submission form:
 You'll need a free GitHub account. Your GitHub username will be visible on the issue, but no other personal information is required.
 
 ### Via Pull Request *(for git users)*
-Edit `cameras.json` directly and open a PR. The CI workflow validates your entry automatically. Follow this structure:
+Edit `cameras.json` directly and open a PR. The CI workflow validates your entry automatically.
 
+**Adding a camera for an operator already in the table** (e.g. a second Tesco):
 ```json
 {
-    "id": "unique-kebab-case-id",
+    "id": "tesco-highstreet-anytown-001",
     "lat": 51.507400,
     "lng": -0.127500,
-    "location_desc": "Outside Tesco Extra, High Street, Anytown — covers car park entrance",
+    "location_desc": "Outside Tesco Express, High Street, Anytown — covers entrance and pavement",
+    "operator_id": "tesco",
+    "added": "YYYY-MM-DD"
+}
+```
+
+**Adding a camera for a new operator** (include operator details inline — the maintainer will move them to the operators table on merge):
+```json
+{
+    "id": "new-org-location-001",
+    "lat": 51.507400,
+    "lng": -0.127500,
+    "location_desc": "Outside New Org building entrance, Example Street, Anytown",
     "operator": {
-        "name": "Tesco Stores Ltd",
-        "ico_reg": "Z7234567",
-        "privacy_email": "dpo@tesco.com",
-        "postal_address": "Tesco House, Shire Park, Kestrel Way, Welwyn Garden City, AL7 1GA"
+        "name": "New Organisation Ltd",
+        "ico_reg": "Z1234567",
+        "privacy_email": "dpo@neworg.example.com",
+        "postal_address": "1 Example Street, Anytown, AB1 2CD"
     },
     "added": "YYYY-MM-DD"
 }
 ```
 
-**Required:** `id`, `lat`, `lng`, `location_desc`, `operator.name`
+**Required:** `id`, `lat`, `lng`, `location_desc`, and either `operator_id` or `operator.name`
 **Optional but helpful:** `ico_reg`, `privacy_email`, `postal_address`
 
 ---
